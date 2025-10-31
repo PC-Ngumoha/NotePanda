@@ -1,13 +1,12 @@
 {
   "expo": {
-    // "schema": "notepanda",
     "name": "NotePanda",
     "slug": "NotePanda",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
     "scheme": "notepanda",
-    "userInterfaceStyle": "automatic",
+    "userInterfaceStyle": "dark",
     "newArchEnabled": true,
     "ios": {
       "supportsTablet": true
