@@ -9,6 +9,7 @@ export const Colors = {
     background: '#fff',
     uiBackground: '#95abee',
     // tint: tintColorLight,
+    tint: '#dee1e6',
     icon: '#687076',
     // tabIconDefault: '#687076',
     // tabIconSelected: tintColorLight,
@@ -17,6 +18,7 @@ export const Colors = {
     text: '#ECEDEE',
     background: '#151718',
     uiBackground: '#59b842',
+    tint: '#374151',
     icon: '#9BA1A6',
   },
 };

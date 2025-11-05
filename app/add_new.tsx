@@ -1,14 +1,28 @@
 import React from 'react';
-import { StyleSheet } from 'react-native';
+import { Keyboard, StyleSheet, Text, TouchableWithoutFeedback } from 'react-native';
 
-import ThemedText from '@/components/ThemedText';
+import Spacer from '@/components/Spacer';
+import ThemedButton from '@/components/ThemedButton';
+import ThemedTextInput from '@/components/ThemedTextInput';
 import ThemedView from '@/components/ThemedView';
 
 const AddNote = () => {
   return (
-    <ThemedView style={styles.container}>
-      <ThemedText>AddNewNote</ThemedText>
-    </ThemedView>
+    <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+      <ThemedView style={styles.container}>
+        <ThemedTextInput style={styles.input} placeholder="Note Title" />
+        <Spacer />
+        <ThemedTextInput
+          style={styles.multiline}
+          placeholder="Write note here... "
+          multiline={true}
+        />
+        <Spacer height={20} />
+        <ThemedButton style={styles.button}>
+          <Text style={styles.buttonText}>Save Note</Text>
+        </ThemedButton>
+      </ThemedView>
+    </TouchableWithoutFeedback>
   );
 };
 
@@ -17,7 +31,28 @@ export default AddNote;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
+    padding: 20,
+  },
+
+  input: {
+    width: '100%',
+    fontWeight: 'bold',
+    fontSize: 18,
+  },
+
+  multiline: {
+    width: '100%',
+    height: '80%',
+  },
+
+  button: {
+    width: '100%',
+  },
+
+  buttonText: {
+    color: '#fff',
+    fontWeight: 'bold',
+    letterSpacing: 1.2,
+    fontSize: 17,
   },
 });

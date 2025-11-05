@@ -41,7 +41,7 @@ const RootLayout = () => {
             fontWeight: 'bold',
             fontFamily: 'Outfit_700Bold',
           },
-          headerShadowVisible: true,
+          headerShadowVisible: false,
         }}
       >
         <Stack.Screen name="index" options={{ title: 'NotePanda', headerShown: true }} />
