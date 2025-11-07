@@ -5,6 +5,7 @@ import { createContext, ReactNode, useEffect } from 'react';
 export type NoteContextType = {
   createNote: (payload: Omit<INote, 'id'>) => void;
   listNotes: () => Promise<INote[]>;
+  getNote: (id: string) => Promise<INote>;
 };
 
 export const NoteContext = createContext<NoteContextType | undefined>(undefined);
@@ -22,6 +23,14 @@ export const NoteProvider = ({ children }: { children: ReactNode }) => {
     return notes;
   }
 
+  async function getNote(id: string): Promise<INote> {
+    const note: INote | null = await db.getFirstAsync('SELECT * FROM notes WHERE id = ?', id);
+    if (!note) {
+      throw new Error(`Note with ID ${id} not found`);
+    }
+    return note;
+  }
+
   useEffect(() => {
     async function setup() {
       await db.withTransactionAsync(async () => {
@@ -34,5 +43,9 @@ export const NoteProvider = ({ children }: { children: ReactNode }) => {
     setup();
   }, [db]);
 
-  return <NoteContext.Provider value={{ createNote, listNotes }}>{children}</NoteContext.Provider>;
+  return (
+    <NoteContext.Provider value={{ createNote, listNotes, getNote }}>
+      {children}
+    </NoteContext.Provider>
+  );
 };

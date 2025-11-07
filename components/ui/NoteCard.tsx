@@ -2,15 +2,8 @@ import { Colors } from '@/constants/colors';
 import { INote } from '@/constants/types';
 import { Feather } from '@expo/vector-icons';
 import React from 'react';
-import {
-  Pressable,
-  StyleProp,
-  StyleSheet,
-  Text,
-  useColorScheme,
-  View,
-  ViewStyle,
-} from 'react-native';
+import { Pressable, StyleProp, StyleSheet, useColorScheme, View, ViewStyle } from 'react-native';
+import ThemedText from '../ThemedText';
 import ThemedView from '../ThemedView';
 
 const NoteCard = ({
@@ -30,8 +23,8 @@ const NoteCard = ({
       {...props}
     >
       <View style={styles.infoSection}>
-        <Text style={styles.title}>{element.title}</Text>
-        <Text style={[{ color: theme.text }, styles.text]}>{element.body}</Text>
+        <ThemedText style={styles.title}>{element.title}</ThemedText>
+        <ThemedText style={styles.text}>{element.body}</ThemedText>
       </View>
       <Pressable style={styles.deleteSection}>
         <Feather name="trash-2" size={20} color={theme.uiBackground} />

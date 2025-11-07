@@ -51,7 +51,7 @@ const RootLayout = () => {
         >
           <Stack.Screen name="index" options={{ title: 'NotePanda', headerShown: true }} />
           <Stack.Screen name="add_new" options={{ title: 'Add Note', headerShown: true }} />
-          <Stack.Screen name="details" options={{ title: 'Note Details', headerShown: true }} />
+          <Stack.Screen name="note/[id]" options={{ title: 'Note Details', headerShown: true }} />
         </Stack>
       </ThemedView>
     </NoteProvider>
