@@ -19,7 +19,7 @@ const NoteCard = ({
   ...props
 }: {
   element: INote;
-  style?: StyleProp<ViewStyle>;
+  style: StyleProp<ViewStyle>;
 }) => {
   const colorScheme = useColorScheme()!;
   const theme = Colors[colorScheme] ?? Colors.light;

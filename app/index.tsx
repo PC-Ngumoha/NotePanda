@@ -2,7 +2,7 @@ import RoundHoverButton from '@/components/ui/RoundHoverButton';
 import { Feather } from '@expo/vector-icons';
 import { usePathname, useRouter } from 'expo-router';
 import React, { useEffect, useState } from 'react';
-import { FlatList, StyleSheet } from 'react-native';
+import { FlatList, Pressable, StyleSheet } from 'react-native';
 
 import ThemedView from '@/components/ThemedView';
 import NoteCard from '@/components/ui/NoteCard';
@@ -35,7 +35,13 @@ const Home = () => {
         <FlatList
           style={styles.cardList}
           data={notes}
-          renderItem={({ item }) => <NoteCard style={styles.card} element={item} />}
+          renderItem={({ item }) => (
+            <Pressable
+              onPress={() => router.push({ pathname: '/note/[id]', params: { id: item.id } })}
+            >
+              <NoteCard style={styles.card} element={item} />
+            </Pressable>
+          )}
         />
       </ThemedView>
 
