@@ -1,11 +1,13 @@
 import { INote } from '@/constants/types';
 import * as SQLite from 'expo-sqlite';
-import { createContext, ReactNode, useEffect } from 'react';
+import { createContext, ReactNode, useEffect, useState } from 'react';
 
 export type NoteContextType = {
   createNote: (payload: Omit<INote, 'id'>) => void;
   listNotes: () => Promise<INote[]>;
   getNote: (id: string) => Promise<INote>;
+  deleteNote: (id: string) => void;
+  refreshKey: number;
 };
 
 export const NoteContext = createContext<NoteContextType | undefined>(undefined);
@@ -13,9 +15,12 @@ export const NoteContext = createContext<NoteContextType | undefined>(undefined)
 export const NoteProvider = ({ children }: { children: ReactNode }) => {
   const db = SQLite.openDatabaseSync('notes.db');
 
+  const [refreshKey, setRefreshKey] = useState(0); // manual refresh trigger - hacky solution
+
   async function createNote({ title, body }: Omit<INote, 'id'>) {
     const result = await db.runAsync(`INSERT INTO notes (title, body) VALUES (?, ?)`, title, body);
-    console.log(result);
+    // console.log(result);
+    setRefreshKey((k) => k + 1); // A change occurred in the DB
   }
 
   async function listNotes(): Promise<INote[]> {
@@ -31,6 +36,11 @@ export const NoteProvider = ({ children }: { children: ReactNode }) => {
     return note;
   }
 
+  async function deleteNote(id: string) {
+    await db.runAsync('DELETE FROM notes WHERE id = ?', id);
+    setRefreshKey((k) => k + 1);
+  }
+
   useEffect(() => {
     async function setup() {
       await db.withTransactionAsync(async () => {
@@ -44,7 +54,7 @@ export const NoteProvider = ({ children }: { children: ReactNode }) => {
   }, [db]);
 
   return (
-    <NoteContext.Provider value={{ createNote, listNotes, getNote }}>
+    <NoteContext.Provider value={{ createNote, listNotes, getNote, deleteNote, refreshKey }}>
       {children}
     </NoteContext.Provider>
   );

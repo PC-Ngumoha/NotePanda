@@ -1,6 +1,6 @@
 import RoundHoverButton from '@/components/ui/RoundHoverButton';
 import { Feather } from '@expo/vector-icons';
-import { usePathname, useRouter } from 'expo-router';
+import { useRouter } from 'expo-router';
 import React, { useEffect, useState } from 'react';
 import { FlatList, Pressable, StyleSheet } from 'react-native';
 
@@ -11,8 +11,8 @@ import { useNote } from '@/hooks/use-note';
 
 const Home = () => {
   const router = useRouter();
-  const pathname = usePathname();
-  const { listNotes } = useNote();
+  // const pathname = usePathname();
+  const { listNotes, refreshKey } = useNote();
   const [notes, setNotes] = useState<INote[]>([]);
 
   useEffect(() => {
@@ -23,7 +23,7 @@ const Home = () => {
     }
 
     setup();
-  }, [pathname]);
+  }, [refreshKey]);
 
   return (
     <>

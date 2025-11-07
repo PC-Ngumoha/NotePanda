@@ -15,7 +15,6 @@ const AddNote = () => {
   const router = useRouter();
 
   const submitNote = async () => {
-    // console.log(title, body);
     await createNote({ title, body });
     router.back();
   };

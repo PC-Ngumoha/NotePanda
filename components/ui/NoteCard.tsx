@@ -1,5 +1,6 @@
 import { Colors } from '@/constants/colors';
 import { INote } from '@/constants/types';
+import { useNote } from '@/hooks/use-note';
 import { Feather } from '@expo/vector-icons';
 import React from 'react';
 import { Pressable, StyleProp, StyleSheet, useColorScheme, View, ViewStyle } from 'react-native';
@@ -16,6 +17,11 @@ const NoteCard = ({
 }) => {
   const colorScheme = useColorScheme()!;
   const theme = Colors[colorScheme] ?? Colors.light;
+  const { deleteNote } = useNote();
+
+  const handleDelete = async () => {
+    await deleteNote(element.id as string);
+  };
 
   return (
     <ThemedView
@@ -24,9 +30,11 @@ const NoteCard = ({
     >
       <View style={styles.infoSection}>
         <ThemedText style={styles.title}>{element.title}</ThemedText>
-        <ThemedText style={styles.text}>{element.body}</ThemedText>
+        <ThemedText style={styles.text}>
+          {element.body.length > 100 ? element.body.substring(0, 100) + ' ...' : element.body}
+        </ThemedText>
       </View>
-      <Pressable style={styles.deleteSection}>
+      <Pressable style={styles.deleteSection} onPress={handleDelete}>
         <Feather name="trash-2" size={20} color={theme.uiBackground} />
       </Pressable>
     </ThemedView>
