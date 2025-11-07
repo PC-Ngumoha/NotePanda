@@ -1,13 +1,10 @@
+import { INote } from '@/constants/types';
 import * as SQLite from 'expo-sqlite';
 import { createContext, ReactNode, useEffect } from 'react';
 
-export interface INote {
-  title: string;
-  body: string;
-}
-
 export type NoteContextType = {
-  createNote: (payload: INote) => void;
+  createNote: (payload: Omit<INote, 'id'>) => void;
+  listNotes: () => Promise<INote[]>;
 };
 
 export const NoteContext = createContext<NoteContextType | undefined>(undefined);
@@ -15,9 +12,14 @@ export const NoteContext = createContext<NoteContextType | undefined>(undefined)
 export const NoteProvider = ({ children }: { children: ReactNode }) => {
   const db = SQLite.openDatabaseSync('notes.db');
 
-  async function createNote({ title, body }: INote) {
+  async function createNote({ title, body }: Omit<INote, 'id'>) {
     const result = await db.runAsync(`INSERT INTO notes (title, body) VALUES (?, ?)`, title, body);
     console.log(result);
+  }
+
+  async function listNotes(): Promise<INote[]> {
+    const notes: INote[] = await db.getAllAsync('SELECT * FROM notes');
+    return notes;
   }
 
   useEffect(() => {
@@ -27,13 +29,10 @@ export const NoteProvider = ({ children }: { children: ReactNode }) => {
           CREATE TABLE IF NOT EXISTS notes (id INTEGER PRIMARY KEY AUTOINCREMENT, title VARCHAR NOT NULL, body VARCHAR)
         `);
       });
-
-      const notes = await db.getAllAsync('SELECT * FROM notes');
-      console.log(notes);
     }
 
     setup();
   }, [db]);
 
-  return <NoteContext.Provider value={{ createNote }}>{children}</NoteContext.Provider>;
+  return <NoteContext.Provider value={{ createNote, listNotes }}>{children}</NoteContext.Provider>;
 };

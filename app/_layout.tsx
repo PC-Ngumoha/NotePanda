@@ -1,6 +1,7 @@
 import ThemedView from '@/components/ThemedView';
 import { Colors } from '@/constants/colors';
 import { NoteProvider } from '@/context/note-context';
+import { Inter_400Regular, Inter_700Bold } from '@expo-google-fonts/inter';
 import { Outfit_700Bold, useFonts } from '@expo-google-fonts/outfit';
 import { Stack } from 'expo-router';
 import { StatusBar } from 'expo-status-bar';
@@ -14,6 +15,8 @@ const RootLayout = () => {
 
   const [fontsLoaded] = useFonts({
     Outfit_700Bold,
+    Inter_400Regular,
+    Inter_700Bold,
   });
 
   // Will cause navigation bar U.I to match app U.I

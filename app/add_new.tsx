@@ -1,21 +1,23 @@
-import React, { useState } from 'react';
-import { Keyboard, StyleSheet, Text, TouchableWithoutFeedback } from 'react-native';
-
 import Spacer from '@/components/Spacer';
 import ThemedButton from '@/components/ThemedButton';
 import ThemedTextInput from '@/components/ThemedTextInput';
 import ThemedView from '@/components/ThemedView';
 import { useNote } from '@/hooks/use-note';
+import { useRouter } from 'expo-router';
+import React, { useState } from 'react';
+import { Keyboard, StyleSheet, Text, TouchableWithoutFeedback } from 'react-native';
 
 const AddNote = () => {
   const [title, setTitle] = useState('');
   const [body, setBody] = useState('');
 
   const { createNote } = useNote();
+  const router = useRouter();
 
   const submitNote = async () => {
     // console.log(title, body);
     await createNote({ title, body });
+    router.back();
   };
 
   return (

@@ -1,22 +1,42 @@
 import RoundHoverButton from '@/components/ui/RoundHoverButton';
 import { Feather } from '@expo/vector-icons';
-import { Link, useRouter } from 'expo-router';
-import React from 'react';
-import { StyleSheet } from 'react-native';
+import { usePathname, useRouter } from 'expo-router';
+import React, { useEffect, useState } from 'react';
+import { FlatList, StyleSheet } from 'react-native';
 
-import ThemedText from '@/components/ThemedText';
 import ThemedView from '@/components/ThemedView';
+import NoteCard from '@/components/ui/NoteCard';
+import { INote } from '@/constants/types';
+import { useNote } from '@/hooks/use-note';
 
 const Home = () => {
   const router = useRouter();
+  const pathname = usePathname();
+  const { listNotes } = useNote();
+  const [notes, setNotes] = useState<INote[]>([]);
+
+  useEffect(() => {
+    async function setup() {
+      const allNotes = await listNotes();
+      // console.log(notes);
+      setNotes(allNotes);
+    }
+
+    setup();
+  }, [pathname]);
 
   return (
     <>
       <ThemedView style={styles.container}>
-        <ThemedText style={styles.title}>Home</ThemedText>
+        {/* <ThemedText style={styles.title}>Home</ThemedText>
         <Link style={styles.link} href="/details">
           <ThemedText>Details</ThemedText>
-        </Link>
+        </Link> */}
+        <FlatList
+          style={styles.cardList}
+          data={notes}
+          renderItem={({ item }) => <NoteCard style={styles.card} element={item} />}
+        />
       </ThemedView>
 
       {/* Hover button appears at the bottom right */}
@@ -44,5 +64,15 @@ const styles = StyleSheet.create({
   link: {
     marginVertical: 10,
     borderBottomWidth: 1,
+  },
+
+  cardList: {
+    width: '100%',
+    // alignItems: 'center',
+  },
+
+  card: {
+    width: '80%',
+    alignSelf: 'center',
   },
 });
