@@ -1,5 +1,6 @@
 import ThemedView from '@/components/ThemedView';
 import { Colors } from '@/constants/colors';
+import { NoteProvider } from '@/context/note-context';
 import { Outfit_700Bold, useFonts } from '@expo-google-fonts/outfit';
 import { Stack } from 'expo-router';
 import { StatusBar } from 'expo-status-bar';
@@ -29,26 +30,28 @@ const RootLayout = () => {
   }
 
   return (
-    <ThemedView safe={true} style={{ flex: 1 }}>
-      <StatusBar style="auto" />
-      <Stack
-        screenOptions={{
-          headerStyle: {
-            backgroundColor: theme.background,
-          },
-          headerTintColor: theme.text,
-          headerTitleStyle: {
-            fontWeight: 'bold',
-            fontFamily: 'Outfit_700Bold',
-          },
-          headerShadowVisible: false,
-        }}
-      >
-        <Stack.Screen name="index" options={{ title: 'NotePanda', headerShown: true }} />
-        <Stack.Screen name="add_new" options={{ title: 'Add Note', headerShown: true }} />
-        <Stack.Screen name="details" options={{ title: 'Note Details', headerShown: true }} />
-      </Stack>
-    </ThemedView>
+    <NoteProvider>
+      <ThemedView safe={true} style={{ flex: 1 }}>
+        <StatusBar style="auto" />
+        <Stack
+          screenOptions={{
+            headerStyle: {
+              backgroundColor: theme.background,
+            },
+            headerTintColor: theme.text,
+            headerTitleStyle: {
+              fontWeight: 'bold',
+              fontFamily: 'Outfit_700Bold',
+            },
+            headerShadowVisible: false,
+          }}
+        >
+          <Stack.Screen name="index" options={{ title: 'NotePanda', headerShown: true }} />
+          <Stack.Screen name="add_new" options={{ title: 'Add Note', headerShown: true }} />
+          <Stack.Screen name="details" options={{ title: 'Note Details', headerShown: true }} />
+        </Stack>
+      </ThemedView>
+    </NoteProvider>
   );
 };
 

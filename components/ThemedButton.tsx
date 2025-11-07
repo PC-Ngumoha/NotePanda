@@ -27,6 +27,7 @@ const ThemedButton = ({ style, children, ...props }: ThemedButtonPropType) => {
         },
         style,
       ]}
+      {...props}
     >
       {children}
     </Pressable>

@@ -1,24 +1,42 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Keyboard, StyleSheet, Text, TouchableWithoutFeedback } from 'react-native';
 
 import Spacer from '@/components/Spacer';
 import ThemedButton from '@/components/ThemedButton';
 import ThemedTextInput from '@/components/ThemedTextInput';
 import ThemedView from '@/components/ThemedView';
+import { useNote } from '@/hooks/use-note';
 
 const AddNote = () => {
+  const [title, setTitle] = useState('');
+  const [body, setBody] = useState('');
+
+  const { createNote } = useNote();
+
+  const submitNote = async () => {
+    // console.log(title, body);
+    await createNote({ title, body });
+  };
+
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
       <ThemedView style={styles.container}>
-        <ThemedTextInput style={styles.input} placeholder="Note Title" />
+        <ThemedTextInput
+          style={styles.input}
+          placeholder="Note Title"
+          value={title}
+          onChangeText={(text) => setTitle(text)}
+        />
         <Spacer />
         <ThemedTextInput
           style={styles.multiline}
           placeholder="Write note here... "
           multiline={true}
+          value={body}
+          onChangeText={(text) => setBody(text)}
         />
         <Spacer height={20} />
-        <ThemedButton style={styles.button}>
+        <ThemedButton style={styles.button} onPress={submitNote}>
           <Text style={styles.buttonText}>Save Note</Text>
         </ThemedButton>
       </ThemedView>
