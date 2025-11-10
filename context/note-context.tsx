@@ -8,6 +8,7 @@ export type NoteContextType = {
   getNote: (id: string) => Promise<INote>;
   deleteNote: (id: string) => void;
   refreshKey: number;
+  updateNote: (id: string, payload: Omit<INote, 'id'>) => void;
 };
 
 export const NoteContext = createContext<NoteContextType | undefined>(undefined);
@@ -21,6 +22,17 @@ export const NoteProvider = ({ children }: { children: ReactNode }) => {
     const result = await db.runAsync(`INSERT INTO notes (title, body) VALUES (?, ?)`, title, body);
     // console.log(result);
     setRefreshKey((k) => k + 1); // A change occurred in the DB
+  }
+
+  async function updateNote(id: string, { title, body }: Omit<INote, 'id'>) {
+    const result = await db.runAsync(
+      `UPDATE notes SET title = ?, body = ? WHERE id = ?`,
+      title,
+      body,
+      id,
+    );
+    console.log(result);
+    setRefreshKey((k) => k + 1);
   }
 
   async function listNotes(): Promise<INote[]> {
@@ -54,7 +66,9 @@ export const NoteProvider = ({ children }: { children: ReactNode }) => {
   }, [db]);
 
   return (
-    <NoteContext.Provider value={{ createNote, listNotes, getNote, deleteNote, refreshKey }}>
+    <NoteContext.Provider
+      value={{ createNote, listNotes, getNote, deleteNote, refreshKey, updateNote }}
+    >
       {children}
     </NoteContext.Provider>
   );

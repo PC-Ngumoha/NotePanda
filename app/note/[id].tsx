@@ -19,6 +19,10 @@ const NoteDetails = () => {
     router.back();
   };
 
+  const handleEdit = async () => {
+    router.push({ pathname: '/add_new', params: { noteId: id } });
+  };
+
   useEffect(() => {
     async function setup() {
       const foundNote = await getNote(id as string);
@@ -38,7 +42,7 @@ const NoteDetails = () => {
       <Spacer />
       <ThemedText style={styles.text}>{note.body}</ThemedText>
       <Spacer height={100} />
-      <ThemedButton style={styles.button} onPress={() => {}}>
+      <ThemedButton style={styles.button} onPress={handleEdit}>
         <Text style={styles.buttonText}>Edit Note</Text>
       </ThemedButton>
       <Spacer height={10} />

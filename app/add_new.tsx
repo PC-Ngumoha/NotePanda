@@ -3,21 +3,43 @@ import ThemedButton from '@/components/ThemedButton';
 import ThemedTextInput from '@/components/ThemedTextInput';
 import ThemedView from '@/components/ThemedView';
 import { useNote } from '@/hooks/use-note';
-import { useRouter } from 'expo-router';
-import React, { useState } from 'react';
+import { useLocalSearchParams, useRouter } from 'expo-router';
+import React, { useEffect, useState } from 'react';
 import { Keyboard, StyleSheet, Text, TouchableWithoutFeedback } from 'react-native';
 
 const AddNote = () => {
+  const { noteId } = useLocalSearchParams();
   const [title, setTitle] = useState('');
   const [body, setBody] = useState('');
 
-  const { createNote } = useNote();
+  // console.log(noteId);
+  const { createNote, getNote, updateNote } = useNote();
   const router = useRouter();
 
-  const submitNote = async () => {
+  const handleSubmitNote = async () => {
     await createNote({ title, body });
     router.back();
   };
+
+  const handleUpdateNote = async () => {
+    await updateNote(noteId as string, { title, body });
+    router.replace('/');
+  };
+
+  useEffect(() => {
+    async function setup(id: string) {
+      const note = await getNote(id);
+
+      if (note) {
+        setTitle(note.title);
+        setBody(note.body);
+      }
+    }
+
+    if (noteId) {
+      setup(noteId as string);
+    }
+  }, []);
 
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
@@ -37,7 +59,7 @@ const AddNote = () => {
           onChangeText={(text) => setBody(text)}
         />
         <Spacer height={20} />
-        <ThemedButton style={styles.button} onPress={submitNote}>
+        <ThemedButton style={styles.button} onPress={noteId ? handleUpdateNote : handleSubmitNote}>
           <Text style={styles.buttonText}>Save Note</Text>
         </ThemedButton>
       </ThemedView>
