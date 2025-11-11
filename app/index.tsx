@@ -4,6 +4,7 @@ import { useRouter } from 'expo-router';
 import React, { useEffect, useState } from 'react';
 import { FlatList, Pressable, StyleSheet } from 'react-native';
 
+import Spacer from '@/components/Spacer';
 import ThemedView from '@/components/ThemedView';
 import NoteCard from '@/components/ui/NoteCard';
 import { INote } from '@/constants/types';
@@ -32,6 +33,7 @@ const Home = () => {
         <Link style={styles.link} href="/details">
           <ThemedText>Details</ThemedText>
         </Link> */}
+        <Spacer />
         <FlatList
           style={styles.cardList}
           data={notes}
